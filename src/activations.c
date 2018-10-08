@@ -13,15 +13,26 @@ void activate_matrix(matrix m, ACTIVATION a)
         double sum = 0;
         for(j = 0; j < m.cols; ++j){
             double x = m.data[i*m.cols + j];
+            double result = 0.0;
             if(a == LOGISTIC){
-                // TODO
+                float exp_val = exp((double) -x);
+                result = 1 / (1 + exp_val);
             } else if (a == RELU){
-                // TODO
+                if (x < 0) {
+                    result = 0;
+                } else {
+                    result = x;
+                }
             } else if (a == LRELU){
-                // TODO
+                if (x < 0) {
+                    result = -0.1 * x; // TODO: what value to use for leaky
+                } else {
+                    result = x;
+                }
             } else if (a == SOFTMAX){
-                // TODO
+                result = exp((double) x);
             }
+            m.data[i*m.cols + j] = result;
             sum += m.data[i*m.cols + j];
         }
         if (a == SOFTMAX) {
