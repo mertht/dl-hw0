@@ -103,13 +103,13 @@ matrix matmul(matrix a, matrix b)
     // 1.4 - Implement matrix multiplication. Make sure it's fast!
     // TODO: verify correctness
 
-    for (int i = 0; i < a.rows; i++) {
-        for (int j = 0; j < b.cols; j++) {
-            float sum = 0.0;
-            for (int k = 0; k < a.cols; k++) {
-                sum += a.data[i*a.cols + j + k] * b.data[(i+k)*b.cols + j];
+    for (int k = 0; k < a.cols; k++) {
+        for (int i = 0; i < a.rows; i++) {
+            for (int j = 0; j < b.cols; j++) {
+            // float sum = 0.0;
+                c.data[i*c.cols + j] += a.data[i*a.cols + k] * b.data[k*b.cols + j];
             }
-            c.data[i*c.cols + j] = sum;
+            // c.data[i*c.cols + j] = sum;
         }
     }
     return c;

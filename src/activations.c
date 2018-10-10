@@ -8,31 +8,24 @@
 // ACTIVATION a: function to run
 void activate_matrix(matrix m, ACTIVATION a)
 {
+    // TODO: verify
     int i, j;
     for(i = 0; i < m.rows; ++i){
         double sum = 0;
         for(j = 0; j < m.cols; ++j){
             double x = m.data[i*m.cols + j];
-            double result = 0.0;
+            double fx = 0.0;
             if(a == LOGISTIC){
                 float exp_val = exp((double) -x);
-                result = 1 / (1 + exp_val);
+                fx = 1 / (1 + exp_val);
             } else if (a == RELU){
-                if (x < 0) {
-                    result = 0;
-                } else {
-                    result = x;
-                }
+                fx = (x < 0) ? 0 : x;
             } else if (a == LRELU){
-                if (x < 0) {
-                    result = -0.1 * x; // TODO: what value to use for leaky
-                } else {
-                    result = x;
-                }
+                fx = (x < 0) ? 0.1*x : x;
             } else if (a == SOFTMAX){
-                result = exp((double) x);
+                fx = exp((double) x);
             }
-            m.data[i*m.cols + j] = result;
+            m.data[i*m.cols + j] = fx;
             sum += m.data[i*m.cols + j];
         }
         if (a == SOFTMAX) {
@@ -48,11 +41,22 @@ void activate_matrix(matrix m, ACTIVATION a)
 // matrix d: delta before activation gradient
 void gradient_matrix(matrix m, ACTIVATION a, matrix d)
 {
+    // TODO: verify
     int i, j;
     for(i = 0; i < m.rows; ++i){
         for(j = 0; j < m.cols; ++j){
-            double x = m.data[i*m.cols + j];
-            // TODO: multiply the correct element of d by the gradient
+            double fx = m.data[i*m.cols + j];
+            double dphi = 0.0;
+            if(a == LOGISTIC){
+                dphi = fx * (1 - fx);
+            } else if (a == RELU){
+                dphi = (fx < 0) ? 0 : 1;
+            } else if (a == LRELU){
+                dphi = (fx < 0) ? 0.1 : 1;
+            } else if (a == SOFTMAX){
+                dphi = 1;
+            }
+            d.data[i*m.cols + j] *= dphi * fx; // TODO: are we modifying the correct matrix?
         }
     }
 }
