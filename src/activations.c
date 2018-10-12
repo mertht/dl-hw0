@@ -29,7 +29,9 @@ void activate_matrix(matrix m, ACTIVATION a)
             sum += m.data[i*m.cols + j];
         }
         if (a == SOFTMAX) {
-            // TODO: have to normalize by sum if we are using SOFTMAX
+            for (int j = 0; j < m.cols; j++) {
+                m.data[i*m.cols + j] /= sum;
+            }
         }
     }
 }

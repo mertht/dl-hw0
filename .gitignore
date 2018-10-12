@@ -9,6 +9,8 @@
 libuwnet*
 uwnet
 mnist.tar.gz
+/mnist
+/obj
 
 # OS Generated #
 .DS_Store*
