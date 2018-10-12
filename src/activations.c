@@ -58,7 +58,7 @@ void gradient_matrix(matrix m, ACTIVATION a, matrix d)
             } else if (a == SOFTMAX){
                 dphi = 1;
             }
-            d.data[i*m.cols + j] *= dphi * fx; // TODO: are we modifying the correct matrix?
+            d.data[i*m.cols + j] *= dphi; // TODO: are we modifying the correct matrix?
         }
     }
 }
